@@ -1,23 +1,28 @@
 /**
-    @flow
-*/
-import React from 'react';
+ * @flow
+ */
+import React,{ PropTypes } from 'react';
 import {
-    Platform,
-    BackAndroid,
-    StyleSheet,
-    View,
+  Platform,
+  BackAndroid,
 } from 'react-native';
 import { connect } from 'react-redux';
 import ExNavigator from '@exponent/react-native-navigator';
-import { backRoute } from './actions/route';
-import { navigatorAction } from './utils/navigatorHelper';
-import AppRouter from './routers/index';
+import { backRoute } from '../actions/route';
+import { navigatorAction } from '../utils/navigatorHelper';
+import AppRouter from '../routers/index';
 
-class Root extends React.Component {
+
+class FilesTabView extends React.Component {
   constructor(props) {
     super(props);
   }
+
+  static propTypes = {
+    navigator: PropTypes.object.isRequired,
+    navKey: PropTypes.string.isRequired,
+    initialRouteUrl: PropTypes.string.isRequired,
+  };
 
   componentDidMount() {
     if (Platform.OS === 'android') {
@@ -43,37 +48,27 @@ class Root extends React.Component {
   }
 
   render() {
-    let initialRoute = AppRouter.getExRoute(this.props.route.url);
+    let initialRoute = AppRouter.getExRoute(this.props.initialRouteUrl);
     return (
-        <View style={styles.container}>
-            <ExNavigator
-              initialRoute={initialRoute}
-              navKey="root"
-              showNavigationBar={false}
-              ref={(exNavigator) => { this._exNavigator = exNavigator; }}/>
-        </View>
+      <ExNavigator
+        initialRoute={initialRoute}
+        navKey={this.props.navKey}
+        navigator={this.props.navigator}
+        showNavigationBar={false}
+        ref={(exNavigator) => { this._exNavigator = exNavigator; }}
+      />
     );
   }
 
 }
 
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
-
-
 function mapStateToProps(state) {
-    return state;
-    /*
   const {route} = state;
 
   return {
     route
   };
-  */
 }
 
-export default connect(mapStateToProps)(Root);
+export default connect(mapStateToProps)(FilesTabView);

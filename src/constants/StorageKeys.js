@@ -1,0 +1,5 @@
+/**
+ * @flow
+ */
+export const SESSION_MANAGER = 'STORAGE_KEY_SESSION_MANAGER';
+export const SETTINGS_AUTO_SYNC = 'STORAGE_KEY_SETTINGS_AUTO_SYNC';
