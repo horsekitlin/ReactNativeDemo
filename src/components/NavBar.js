@@ -37,7 +37,7 @@ export default class NavBar extends React.Component {
   };
 
   static defaultProps = {
-    title: 'Default Title',
+    title: '30 Days of RN',
     actions: null,
   };
 
