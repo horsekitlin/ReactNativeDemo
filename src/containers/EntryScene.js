@@ -5,9 +5,13 @@ import React from 'react';
 import {
     Linking,
 } from 'react-native';
-import { connect } from 'react-redux';
-import { replaceRoute } from '../actions/route';
-import { checkAppSessionState } from '../actions/auth';
+import {
+    connect
+} from 'react-redux';
+import {
+    replaceRoute
+} from '../actions/route';
+
 import AppSessionState from '../constants/AppSessionState';
 
 
