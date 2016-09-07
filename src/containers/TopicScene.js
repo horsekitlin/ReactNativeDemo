@@ -28,11 +28,13 @@ import Swiper from 'react-native-swiper';
 import Icon from 'react-native-vector-icons/Ionicons';
 import IconFA from 'react-native-vector-icons/FontAwesome';
 
-var {height, width} = Dimensions.get('window');
+const {height, width} = Dimensions.get('window');
 
 class FirstScene extends React.Component {
   constructor(props) {
     super(props);
+    this.goTo = this.goTo.bind(this);
+    this.renderTopic = this.renderTopic.bind(this);
 
     var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
@@ -46,8 +48,10 @@ class FirstScene extends React.Component {
     name: PropTypes.string,
   };
 
-  static defaultProps = {
-  };
+  goTo(route: string){
+      console.log(route);
+      this.props.dispatch(changeRoute(route, this.props.navigator.props.navKey));
+  }
 
   renderTopic(topic: Object): React.Component{
       const topicIcon = (topic.isFA)
@@ -59,14 +63,17 @@ class FirstScene extends React.Component {
           size={50}
           color={topic.color}
           name={topic.icon}/>;
+      const index = ++topic.key;
+      const route = `/day${index}/?name=${topic.title}`;
+
       return (
             <View style={styles.row}>
-                <TouchableWithoutFeedback onPress={() => console.log(123)}>
+                <TouchableWithoutFeedback onPress={() => this.goTo(route)}>
                 <View style={styles.rowContent}>
 
                     {topicIcon}
                     <Text style={styles.text}>
-                        Day{++topic.key}
+                        Day{index}
                     </Text>
                 </View>
                 </TouchableWithoutFeedback>
