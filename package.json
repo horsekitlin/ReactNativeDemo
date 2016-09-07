@@ -10,7 +10,7 @@
     "crossroads": "^0.12.2",
     "react": "15.2.1",
     "react-addons-pure-render-mixin": "^15.3.0",
-    "react-native": "0.30.0",
+    "react-native": "^0.32.0",
     "react-native-button": "^1.6.0",
     "react-native-scrollable-tab-view": "^0.5.3",
     "react-native-vector-icons": "^2.0.3",

@@ -8,12 +8,17 @@ import {
   StyleSheet,
   InteractionManager,
 } from 'react-native';
+import {
+    changeRoute,
+} from '../actions/route';
 import {connect} from 'react-redux';
 import NavBar from '../components/NavBar';
+
 
 class FirstScene extends React.Component {
   constructor(props) {
     super(props);
+    this.nextpage = this.nextpage.bind(this);
   }
 
   static propTypes = {
@@ -34,6 +39,13 @@ class FirstScene extends React.Component {
 
   }
 
+  nextpage(){
+      var maxNum = 1000;
+      var minNum = 0;
+      var n = Math.floor(Math.random() * (maxNum - minNum + 1)) + minNum;
+      this.props.dispatch(changeRoute(`/first/?count=${n}`, this.props.navigator.props.navKey));
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -41,12 +53,10 @@ class FirstScene extends React.Component {
               navigator={this.props.navigator}
               title={this.props.name}
               renderRightButtonsComponent={this.renderNavRightButtons}/>
+          <Text onPress={this.nextpage}>Next Page</Text>
 
-          <Text style={{fontSize: 50, margin: 50}}>First Scene</Text>
-          <Text style={{fontSize: 50, margin: 50}}>First Scene</Text>
-          <Text style={{fontSize: 50, margin: 50}}>First Scene</Text>
-          <Text style={{fontSize: 50, margin: 50}}>First Scene</Text>
-          <Text style={{fontSize: 50, margin: 50}}>First Scene</Text>
+
+          <Text style={{fontSize: 50, margin: 50}}>{this.props.count || 'Home Page'}</Text>
       </View>
     );
   }

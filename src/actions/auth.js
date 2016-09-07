@@ -14,6 +14,7 @@ export function login(account: string, password: string): Function {
       pwd: password,
     };
     dispatch({type: ActionTypes.LOGIN_REQUEST});
+
     setTimeout(function(){
         dispatch({
         type: ActionTypes.LOGIN_RECEIVED,

@@ -8,9 +8,16 @@ const initialState = {url: '/', navKey: null, isReplace: false, isBack: false};
 let prevRoutes = ['/main'];
 
 
+const history = {};
+
 export default createReducer(initialState, {
   [ActionTypes.ROUTE_CHANGE](state, action) {
     prevRoutes.push(state.url);
+    let history_arr = history[action.navKey] || [];
+    history_arr.push({
+        url: action.url,
+    });
+    console.log(history);
     return Object.assign({}, state, {url: action.url, navKey: action.navKey, isReplace: false, isBack: false});
   },
   [ActionTypes.ROUTE_REPLACE](state, action) {

@@ -10,11 +10,9 @@ export class RouteAuthLogin extends RouteBase {
   static PATTERN = '/auth/login/:?query:';
 
   renderScene(navigator, query) {
-      console.log(query);
     return (
       <LoginScene
-        navigator={navigator}
-      />
+        navigator={navigator} />
     );
   }
 }

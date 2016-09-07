@@ -8,10 +8,12 @@ import FirstScene from '../containers/FirstScene';
 export class FirstRoute extends RouteBase {
   static PATTERN = '/first/:?query:';
 
-  renderScene(navigator, query) {
+  renderScene(navigator, query= {}) {
+    const { count } = query;
     return (
       <FirstScene
-        navigator={navigator}/>
+        navigator={navigator}
+        count={count}/>
     );
   }
 }
