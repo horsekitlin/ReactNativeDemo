@@ -25,7 +25,8 @@ import {
 
 import NavBar from '../components/NavBar';
 import Swiper from 'react-native-swiper';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/Ionicons';
+import IconFA from 'react-native-vector-icons/FontAwesome';
 
 var {height, width} = Dimensions.get('window');
 
@@ -49,17 +50,23 @@ class FirstScene extends React.Component {
   };
 
   renderTopic(topic: Object): React.Component{
+      const topicIcon = (topic.isFA)
+        ? <IconFA
+           size={50}
+           color={topic.color}
+           name={topic.icon}/>
+       :    <Icon
+          size={50}
+          color={topic.color}
+          name={topic.icon}/>;
       return (
             <View style={styles.row}>
                 <TouchableWithoutFeedback onPress={() => console.log(123)}>
                 <View style={styles.rowContent}>
-                     <Icon
-                        size={50}
-                        color={topic.iconColor}
-                        name={topic.iconName}/>
 
+                    {topicIcon}
                     <Text style={styles.text}>
-                      {topic.name}
+                        Day{++topic.key}
                     </Text>
                 </View>
                 </TouchableWithoutFeedback>
@@ -79,13 +86,13 @@ class FirstScene extends React.Component {
                 horizontal={true}
                 autoplay={true}>
                 <View style={styles.slide1}>
-                    <Text style={styles.text}>Easy</Text>
+                    <Text style={styles.swiperText}>Easy</Text>
                 </View>
                 <View style={styles.slide2}>
-                  <Text style={styles.text}>Beautiful</Text>
+                  <Text style={styles.swiperText}>Beautiful</Text>
                 </View>
                 <View style={styles.slide3}>
-                  <Text style={styles.text}>And simple</Text>
+                  <Text style={styles.swiperText}>And simple</Text>
                 </View>
             </Swiper>
 
@@ -130,7 +137,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#92BBD9'
     },
 
-    text: {
+    swiperText: {
         color: '#fff',
         fontSize: 30,
         fontWeight: 'bold'
