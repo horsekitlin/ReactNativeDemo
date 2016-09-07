@@ -4,9 +4,10 @@
 import * as ActionTypes from '../constants/ActionTypes';
 
 
-export function changeRoute(url: string, navKey: string): {type: string, url: string} {
+export function changeRoute(url: string, navKey: string, key: ?number): {type: string, url: string, key: ?number} {
   return {
     type: ActionTypes.ROUTE_CHANGE,
+    key,
     url,
     navKey,
   };

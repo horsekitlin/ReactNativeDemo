@@ -9,11 +9,23 @@ var g_cache = null;
 
 class SessionManager {
   init() {
-    if (g_cache == null) {
+    if (g_cache === null) {
       return AsyncStorage.getItem(StorageKeys.SESSION_MANAGER)
         .then(data => {
-          let dataObj = JSON.parse(data);
-          this._fillCache(dataObj);
+            console.log(data);
+            if(data === null){
+                this._fillCache({
+                    prevRoutes: [{
+                        route: '/main',
+                        key: '-1'
+                    }]
+                });
+                return this.updasteHistory();
+            }else{
+                let dataObj = JSON.parse(data);
+                this._fillCache(dataObj);
+            }
+
         })
         .then(() => {
           return Promise.resolve(true);
@@ -27,44 +39,31 @@ class SessionManager {
     }
   }
 
-  get acn() {
-    return g_cache && g_cache.acn;
+  get prevRoutes() {
+    return g_cache && g_cache.prevRoutes;
   }
 
-  get sessionToken() {
-    return g_cache && g_cache.sessionToken;
+  pushRoute(route: Object){
+      g_cache.prevRoutes.push(route);
+      console.log(route);
+      return AsyncStorage.setItem(StorageKeys.SESSION_MANAGER, JSON.stringify(g_cache));
   }
 
-  get wnsServer() {
-    return g_cache && g_cache.wnsServer;
+  popRoute(){
+      const url = g_cache.prevRoutes.pop();
+      console.log(url);
+      this.updasteHistory();
+      return url;
   }
 
-  get ssn() {
-    return g_cache && g_cache.ssn;
-  }
-
-  get sun() {
-    return g_cache && g_cache.sun;
+  updasteHistory(){
+      return AsyncStorage.setItem(StorageKeys.SESSION_MANAGER, JSON.stringify(g_cache));
   }
 
   _fillCache(data) {
-    let {accountData, sessionToken} = data;
     g_cache = {
-      acn: accountData.acn,
-      ssn: accountData.ssn,
-      sun: accountData.sun,
-      wnsServer: `http://${accountData.wns_ip}:${accountData.wns_port}`,
-      sessionToken: sessionToken,
+      prevRoutes: data.prevRoutes
     };
-  }
-
-  update(accountData, sessionToken) {
-    let data = {
-      accountData: accountData,
-      sessionToken: sessionToken,
-    };
-    this._fillCache(data);
-    return AsyncStorage.setItem(StorageKeys.SESSION_MANAGER, JSON.stringify(data));
   }
 
   cleanup() {

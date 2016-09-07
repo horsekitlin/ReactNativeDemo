@@ -5,6 +5,7 @@ import crossroads from 'crossroads';
 import {
   RouteEntry,
   RouteHome,
+  RouteLogs,
 } from './home';
 import {
     RouteDay1,
@@ -48,6 +49,7 @@ class AppRouter {
     [
       RouteEntry,
       RouteHome,
+      RouteLogs,
       RouteDay1,
       RouteDay2,
       RouteDay3,

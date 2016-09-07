@@ -25,16 +25,17 @@ import {
 
 import NavBar from '../components/NavBar';
 import Swiper from 'react-native-swiper';
-import Icon from 'react-native-vector-icons/Ionicons';
+import GetIcon from '../components/GetIcon';
 import IconFA from 'react-native-vector-icons/FontAwesome';
 
 const {height, width} = Dimensions.get('window');
 
-class FirstScene extends React.Component {
+class TopicScene extends React.Component {
   constructor(props) {
     super(props);
     this.goTo = this.goTo.bind(this);
     this.renderTopic = this.renderTopic.bind(this);
+    this.renderRightButton = this.renderRightButton.bind(this);
 
     var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
@@ -48,27 +49,19 @@ class FirstScene extends React.Component {
     name: PropTypes.string,
   };
 
-  goTo(route: string){
-      console.log(route);
-      this.props.dispatch(changeRoute(route, this.props.navigator.props.navKey));
+  goTo(route: string, key: ?number){
+      this.props.dispatch(changeRoute(route, this.props.navigator.props.navKey, key));
   }
 
   renderTopic(topic: Object): React.Component{
-      const topicIcon = (topic.isFA)
-        ? <IconFA
-           size={50}
-           color={topic.color}
-           name={topic.icon}/>
-       :    <Icon
-          size={50}
-          color={topic.color}
-          name={topic.icon}/>;
-      const index = ++topic.key;
+      const topicIcon = <GetIcon
+          {...topic}/>;
+      const index = topic.key + 1;
       const route = `/day${index}/?name=${topic.title}`;
 
       return (
             <View style={styles.row}>
-                <TouchableWithoutFeedback onPress={() => this.goTo(route)}>
+                <TouchableWithoutFeedback onPress={() => this.goTo(route, topic.key)}>
                 <View style={styles.rowContent}>
 
                     {topicIcon}
@@ -81,12 +74,23 @@ class FirstScene extends React.Component {
       );
   }
 
+  renderRightButton(){
+      return(
+          <IconFA.Button
+            onPress = {() => this.goTo('/logs/?name=瀏覽紀錄')}
+            backgroundColor='#00a5e6'
+            size={20}
+            name='cogs' />
+      );
+  }
+
   render() {
     return (
       <View style={styles.container}>
           <NavBar
               navigator={this.props.navigator}
-              title={this.props.name} />
+              title={this.props.name}
+              renderRightButtonsComponent={this.renderRightButton}/>
 
             <Swiper style={styles.wrapper}
                 height={150}
@@ -186,4 +190,4 @@ function mapStateToProps(state) {
   return {};
 }
 
-export default connect(mapStateToProps, null, null, { withRef: true })(FirstScene);
+export default connect(mapStateToProps, null, null, { withRef: true })(TopicScene);

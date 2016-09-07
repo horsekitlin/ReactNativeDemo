@@ -5,7 +5,7 @@ import React from 'react';
 import RouteBase from './base';
 import EntryScene from '../containers/EntryScene';
 import TopicScene from '../containers/TopicScene';
-
+import LogsScene from '../containers/LogsScene';
 
 export class RouteEntry extends RouteBase {
     static PATTERN = '/:?query:';
@@ -23,7 +23,6 @@ export class RouteEntry extends RouteBase {
     }
 }
 
-
 export class RouteHome extends RouteBase {
   static PATTERN = '/main/:?query:';
 
@@ -38,4 +37,16 @@ export class RouteHome extends RouteBase {
   get isHomeRoute() {
     return true;
   }
+}
+export class RouteLogs extends RouteBase {
+  static PATTERN = '/logs/:?query:';
+
+  renderScene(navigator, query) {
+    return (
+        <LogsScene
+            {...query}
+            navigator={navigator} />
+    );
+  }
+
 }

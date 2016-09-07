@@ -8,6 +8,7 @@
   "dependencies": {
     "@exponent/react-native-navigator": "^0.4.8",
     "crossroads": "^0.12.2",
+    "lodash": "^4.15.0",
     "react": "^15.3.1",
     "react-addons-pure-render-mixin": "^15.3.0",
     "react-native": "^0.32.0",
