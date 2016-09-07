@@ -12,14 +12,8 @@ class SessionManager {
     if (g_cache === null) {
       return AsyncStorage.getItem(StorageKeys.SESSION_MANAGER)
         .then(data => {
-            console.log(data);
             if(data === null){
-                this._fillCache({
-                    prevRoutes: [{
-                        route: '/main',
-                        key: '-1'
-                    }]
-                });
+                this.getDefaultCache();
                 return this.updasteHistory();
             }else{
                 let dataObj = JSON.parse(data);
@@ -43,15 +37,25 @@ class SessionManager {
     return g_cache && g_cache.prevRoutes;
   }
 
+  getDefaultCache(){
+      this._fillCache({
+          prevRoutes: [{
+              route: '/main',
+              key: '-1'
+          }]
+      });
+  }
+
   pushRoute(route: Object){
+      if(g_cache === null){
+          this.getDefaultCache();
+      }
       g_cache.prevRoutes.push(route);
-      console.log(route);
       return AsyncStorage.setItem(StorageKeys.SESSION_MANAGER, JSON.stringify(g_cache));
   }
 
   popRoute(){
       const url = g_cache.prevRoutes.pop();
-      console.log(url);
       this.updasteHistory();
       return url;
   }

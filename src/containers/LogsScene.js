@@ -35,6 +35,8 @@ class LogScene extends React.Component{
         this.goTo = this.goTo.bind(this);
         this.renderLog = this.renderLog.bind(this);
         this.refresh = this.refresh.bind(this);
+        this.cleanup = this.cleanup.bind(this);
+        this.renderRightButton = this.renderRightButton.bind(this);
 
         const prevRoutes = SessionManager.prevRoutes;
 
@@ -46,14 +48,18 @@ class LogScene extends React.Component{
         };
     }
 
-    sort(items){
+    sort(items: ?array){
         let arr = [];
-        let index = items.length;
-        console.log(index);
-        for(index; index > 0; index--){
-            console.log(items[index -1]);
-            arr.push(items[index - 1]);
+        if(_.isNull(items)) {
+            return arr;
+        }else{
+            let index = items.length;
+            for(index; index > 0; index--){
+                arr.push(items[index - 1]);
+            }
         }
+
+
         return arr;
     }
 
@@ -76,7 +82,7 @@ class LogScene extends React.Component{
             return null;
         }
         const index = log.key + 1;
-        const topic = DaysTopic[index];
+        const topic = DaysTopic[log.key];
 
         return(
             <TouchableWithoutFeedback
@@ -96,19 +102,37 @@ class LogScene extends React.Component{
         );
     }
 
+    renderRightButton(){
+        return(
+            <TouchableWithoutFeedback
+                onPress={this.cleanup}>
+                <View style={styles.rightButton}>
+                    <Text style={styles.rightButtonText}>清除紀錄</Text>
+                </View>
+            </TouchableWithoutFeedback>
+        );
+    }
+
+    cleanup(){
+        console.log(123);
+        SessionManager.cleanup();
+        this.refresh();
+    }
+
     render(){
         return(
             <View style={styles.container}>
                 <NavBar
+                    renderRightButtonsComponent={this.renderRightButton}
                     navigator={this.props.navigator}
                     title={this.props.name} />
                 <ListView
                     refreshControl={
                       <RefreshControl
                         refreshing={this.state.isRefreshing}
-                        onRefresh={this.refresh}
-                      />
+                        onRefresh={this.refresh} />
                     }
+                    enableEmptySections={true}
                     dataSource={this.state.dataSource}
                     renderRow={this.renderLog}/>
             </View>
@@ -137,6 +161,16 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 18,
         lineHeight: 25,
+    },
+    rightButton: {
+        marginRight: 15,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    rightButtonText: {
+        fontSize: 18,
+        lineHeight: 25,
+        color: '#FFFFFF',
     },
 });
 
